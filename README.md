@@ -1,6 +1,6 @@
 # Imposter Word Game (Go + OpenAI)
 
-A console-based social deduction game built in **Go** using the **OpenAI GPT API** for AI player behavior. Inspired by games like *Among Us*, this game has 1 human player and 3 AI players. One player is randomly assigned as the **imposter**, who does **not know the secret word**, while everyone else tries to give subtle clues.
+A console-based social deduction game built in **Go** using the **OpenAI GPT API** for AI player behavior. This game has 1 human player and 3 AI players. One player is randomly assigned as the **imposter**, who does **not know the secret word**, while everyone else tries to give subtle clues.
 
 ---
 
