@@ -43,6 +43,21 @@ type Player struct {
 var client openai.Client
 
 func main() {
+	// Instructions
+	fmt.Println("==============================================")
+	fmt.Println("           Welcome to Imposter Game           ")
+	fmt.Println("==============================================")
+	fmt.Println("Instructions:")
+	fmt.Println("- There are 4 players: 1 human (YOU) and 3 AI.")
+	fmt.Println("- One player is randomly chosen as the IMPOSTER and does NOT know the secret word.")
+	fmt.Println("- Each player gives a 1-word clue in turn. The turn order is randomized each round.")
+	fmt.Println("- If you are INNOCENT, give a clue that hints at the secret word without being too obvious.")
+	fmt.Println("- If you are the IMPOSTER, you do NOT know the word. Watch the previous clues carefully and try to blend in.")
+	fmt.Println("- During the voting phase, all players (including AI) vote on who they think the imposter is.")
+	fmt.Println("- Majority vote determines whether the imposter is caught. If there is a tie, one of the tied players is chosen randomly.")
+	fmt.Println("- If you are the imposter, the secret word will be revealed to you at the end of the round.")
+	fmt.Println("==============================================\n")
+
 	// Initialize OpenAI client
 	apiKey := os.Getenv("OPENAI_API_KEY")
 	if apiKey == "" {
