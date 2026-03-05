@@ -70,11 +70,12 @@ func main() {
 
 	// Pool of secret words (ChatGPT generated this list)
 	secretWords := []string{
-		"Apple", "Mountain", "River", "Galaxy", "Dragon", "Book",
-		"Computer", "Chocolate", "Castle", "Ocean", "Music", "Planet",
-		"Forest", "Volcano", "Bridge", "Rocket", "Diamond", "Coffee",
-		"Mirror", "Sun", "Moon", "Star", "Island",
-		"Puzzle", "Tiger", "Camera", "Library", "Garden", "Desert",
+		"Volcano", "Compass", "Lantern", "Telescope", "Glacier",
+		"Submarine", "Cactus", "Saturn", "Pyramid", "Hurricane",
+		"Backpack", "Treasure", "Parachute", "Anchor", "Helmet",
+		"Dragonfly", "Waterfall", "Skyscraper", "Fireworks", "Canyon",
+		"Spaceship", "Lighthouse", "Avalanche", "Castle", "Knight",
+		"Jungle", "Desert", "Pirate", "Treasure", "Safari",
 	}
 	usedWords := map[string]bool{} // Tracks words already used in previous rounds
 
@@ -316,10 +317,10 @@ func getClueForAI(role string, secretWord string, aiIndex int, previousClues []s
 
 	if role == "innocent" {
 		personalities := []string{
-			"Think poetically and creatively.",
-			"Think like a scientist exploring categories.",
-			"Think vaguely and abstractly.",
-			"Think metaphorically, be unusual.",
+			"Give a creative but understandable clue.",
+			"Hint at the secret word indirectly but clearly.",
+			"Think logically about associations.",
+			"Give a subtle, indirect clue that makes sense.",
 		}
 
 		prev := ""
@@ -373,28 +374,36 @@ func getAIVote(players []Player, aiIndex int, secretWord string) string {
 		"You are AI voter %d in a social deduction game. One player is the imposter. Think independently.\nHere are the clues:\n", aiIndex+1)
 
 	for _, p := range players {
-		name := p.Name
-		if p.IsHuman {
-			name += " (YOU)"
-		}
-		prompt += fmt.Sprintf("%s: %s\n", name, p.Clue)
+		prompt += fmt.Sprintf("%s: %s\n", p.Name, p.Clue)
 	}
 
 	if players[aiIndex].Role == "innocent" {
 		prompt += fmt.Sprintf(
-			"\nThe secret word is: %s. Compare each clue to the secret word and vote for the player whose clue seems least related to the secret word.\n", secretWord)
+			"\nYou know the secret word: %s.\n"+
+				"Most innocent players will give clues that relate to the secret word in similar ways.\n"+
+				"The imposter's clue will usually feel unrelated or from a completely different theme.\n"+
+				"Compare the clues to the secret word AND to each other.\n"+
+				"Vote for the player whose clue fits the theme the least.\n",
+			secretWord)
 	} else {
-		prompt += "\nYou do NOT know the secret word. Vote based on plausibility and weirdness of clues.\n"
+		prompt +=
+			"\nYou are the imposter and do NOT know the secret word.\n" +
+				"Look at the other clues and try to determine which player might sound the most suspicious.\n" +
+				"Choose a player whose clue seems the most unusual or different from the others.\n" +
+				"Avoid voting for yourself.\n"
 	}
 
 	// FORCE THE AI TO RESPOND WITH ONLY ONE PLAYER
+	prompt += fmt.Sprintf("\nYou are %s. You cannot vote for yourself.\n", players[aiIndex].Name)
+	prompt += "Do NOT vote for yourself.\n"
+	prompt += "\nCompare all clues and find the one that fits the group the least."
 	prompt += "IMPORTANT: Respond with exactly ONE player name only: Player 1, Player 2, Player 3, or Player 4. Do NOT include any explanations, reasoning, or extra text."
 
 	resp, err := client.Chat.Completions.New(
 		context.Background(),
 		openai.ChatCompletionNewParams{
 			Model:       "gpt-4o-mini",
-			Temperature: openai.Float(0.2),
+			Temperature: openai.Float(0.8),
 			Messages: []openai.ChatCompletionMessageParamUnion{
 				openai.UserMessage(prompt),
 			},
