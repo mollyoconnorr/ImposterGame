@@ -394,7 +394,7 @@ func getAIVote(players []Player, aiIndex int, secretWord string) string {
 		context.Background(),
 		openai.ChatCompletionNewParams{
 			Model:       "gpt-4o-mini",
-			Temperature: openai.Float(1.0),
+			Temperature: openai.Float(0.2),
 			Messages: []openai.ChatCompletionMessageParamUnion{
 				openai.UserMessage(prompt),
 			},
