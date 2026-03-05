@@ -36,7 +36,7 @@ A console-based social deduction game built in **Go** using the **OpenAI GPT API
 
 ```bash
 git clone https://github.com/mollyoconnorr/ImposterGame.git
-cd go-imposter-word-game
+cd ImposterGame
 ```
 
 2. **Set your OpenAI API Key**
