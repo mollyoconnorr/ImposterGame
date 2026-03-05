@@ -102,9 +102,16 @@ func main() {
 
 		playRound(secretWord, reader) // Play a single round
 
-		fmt.Print("\nDo you want to play again? (y/n): ")
-		playAgain, _ = reader.ReadString('\n')
-		playAgain = strings.TrimSpace(playAgain)
+		for {
+			fmt.Print("\nDo you want to play again? (y/n): ")
+			playAgain, _ = reader.ReadString('\n')
+			playAgain = strings.TrimSpace(strings.ToLower(playAgain)) // normalize input
+
+			if playAgain == "y" || playAgain == "n" {
+				break // valid input, exit loop
+			}
+			fmt.Println("Invalid input. Please enter 'y' for yes or 'n' for no.")
+		}
 	}
 }
 
